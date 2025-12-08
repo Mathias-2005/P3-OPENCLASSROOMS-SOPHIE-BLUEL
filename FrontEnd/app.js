@@ -18,6 +18,10 @@ async function getWorks(filter) {
       for (let i = 0; i < json.length; i++) {
         setFigure(json[i]);
         setFigureModal(json[i]);
+        const trashDelete = document.querySelectorAll(".trash-container");
+        trashDelete.forEach((e) => {
+          e.addEventListener("click", (event) => deleteWorks(event, json[i]));
+        });
       };
     };
   } catch (error) {
@@ -30,6 +34,7 @@ getWorks();
 //FUNCTION AJOUT DES TRAVAUX DEPUIS JS DYNAMIQUEMENT
 function setFigure(data) {
   const figure = document.createElement("figure"); // CREATION DE VARIABLE 'FIGURE'
+  figure.setAttribute("id", "figure-" + data.id);
   figure.innerHTML = `<img src= ${data.imageUrl} alt= ${data.title}> 
                         <figcaption>${data.title}</figcaption>`; // AJOUT DES IMG + TITLE 
   document.querySelector(".gallery").append(figure); // APPEND FIGURE DANS '.GALLERY' 
@@ -129,6 +134,7 @@ closeModal(); // APPELLE DE LA FONCTION
 //FUNCTION AJOUT DES TRAVAUX DEPUIS JS DYNAMIQUEMENT
 function setFigureModal(data) {
   figure = document.createElement("figure");
+  figure.setAttribute("id", "modal-figure-" + data.id);
   figure.innerHTML = `<img src= ${data.imageUrl} alt= ${data.title}> 
   <div class = "trash-container" id="${data.id}"><i id="trash" class="fa-solid fa-trash-can"></i></div>`; // AJOUT DES IMG 
   figure.className = "modal-figure"; // AJOUT D'UNE CLASSNAME '.'
@@ -162,24 +168,27 @@ function switchModal() {
 };
 switchModal(); // APPELLE DE LA FONCTION
 
-async function deleteWorks(event) {
-  const id = event.currentTarget.dataset.id;
+async function deleteWorks(event, data) {
+  const id = event.currentTarget.id;
   const token = sessionStorage.authToken;
-  const url = "http://localhost:5678/api/works/"; // CREATION DE VARIABLE POUR URL DE l'API
+  const url = "http://localhost:5678/api/works/";
+
   let response = await fetch(url + id, {
     method: "DELETE",
     headers: {
-      Authorization: "Bearer " + token
-    }
+      "Accept": "*/*",
+      "Authorization": "Bearer " + token,
+    },
   });
-  if (response.ok) {
-    throw new Error("Impossible de supprimer le travail");
+
+  // Corrected condition: Check for expected error statuses or successful no-content status
+  if (response.status === 401 || response.status === 500) {
+    throw new Error(`Response status : ${response.status}`);
   }
   else {
-    let result = await response.json();
-    console.log(result)
+    //document.getElementById("figure-" + data.id).remove();
+    //document.getElementById("modal-figure-" + data.id).remove();
+    console.log("Delete successful, no content returned.");
+    console.log(data);
   }
 }
-trashDelete = document.querySelectorAll(".trash-container").forEach(trashDelete => {
-      trashDelete.addEventListener("click", deleteWorks);
-    });
