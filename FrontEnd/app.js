@@ -16,11 +16,11 @@ async function getWorks(filter) {
       };
     }
     else {
-      for (let i = 0; i < json.length; i++) {
+      for (let i = 0; i < json.length; i++) { // BOUCLE POUR APPRAITRE LES WORKS 
         setFigure(json[i]);
         setFigureModal(json[i]);
       };
-      const trashDelete = document.querySelectorAll(".trash-container");
+      const trashDelete = document.querySelectorAll(".trash-container"); // AU CLICK DE TRASHDELETE ON APPELE LA FUNCTION DELETE 
         trashDelete.forEach((e) => {
           e.addEventListener("click", (event) => deleteWorks(event, e.id));
         });
@@ -170,11 +170,11 @@ function switchModal() {
 switchModal(); // APPELLE DE LA FONCTION
 
 async function deleteWorks(event, trashId) {
-  const id = event.currentTarget.id;
-  const token = sessionStorage.authToken;
-  const url = "http://localhost:5678/api/works/";
+  const id = event.currentTarget.id; // ON VIENS PRENDRE L'ID DU WORKS QUE ON VEUT DELETE
+  const token = sessionStorage.authToken; // ON VIENS PRENDRE LE TOKEN DEPUIS LE SESSIONSTORAGE AUTHORIZATION TOKEN 
+  const url = "http://localhost:5678/api/works/"; // ON VIENS PRENDRE L'URL DE L'API DELETE
 
-  let response = await fetch(url + id, {
+  let response = await fetch(url + id, { // FETCH + METHOD DELETE
     method: "DELETE",
     headers: {
       "Accept": "*/*",
@@ -182,11 +182,11 @@ async function deleteWorks(event, trashId) {
     },
   });
 
-  if (response.status === 401 || response.status === 500) {
+  if (response.status === 401 || response.status === 500) { // ERREUR SI ERROR 401 OU 500
     throw new Error(`Response status : ${response.status}`);
   }
   else {
-      document.getElementById("figure-" + trashId).remove();
-      document.getElementById("modal-figure-" + trashId).remove(); 
-  }
-}
+      document.getElementById("figure-" + trashId).remove(); // ON REMOVE LES FIGURES SANS AVOIR BESOINS DE REFRESH LA PAGE
+      document.getElementById("modal-figure-" + trashId).remove(); // ON REMOVE LES FIGURES SANS AVOIR BESOINS DE REFRESH LA PAGE
+  };
+};

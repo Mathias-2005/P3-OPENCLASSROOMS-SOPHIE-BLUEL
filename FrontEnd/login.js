@@ -6,11 +6,11 @@ async function getLogin(event) {
     event.preventDefault();  // SI L'EVENT EST PAS GERER L'ACTION NE DEVRAIT PAS ETRE EXECUTER
 
     let user = {
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value
+        email: document.getElementById("email").value, // ON VIENS RECUPERER LA VALEUR DE EMAIL
+        password: document.getElementById("password").value // ON VIENS RECUPERER LA VALEUR DE MDP
     };
 
-    let response = await fetch(url, {
+    let response = await fetch(url, { // FETCH + METHOD POST
         method: "POST",
         headers: {
             "Content-Type": "application/json",
