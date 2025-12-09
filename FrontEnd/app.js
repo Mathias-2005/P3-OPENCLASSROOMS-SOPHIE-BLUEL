@@ -21,9 +21,9 @@ async function getWorks(filter) {
         setFigureModal(json[i]);
       };
       const trashDelete = document.querySelectorAll(".trash-container"); // AU CLICK DE TRASHDELETE ON APPELE LA FUNCTION DELETE 
-        trashDelete.forEach((e) => {
-          e.addEventListener("click", (event) => deleteWorks(event, e.id));
-        });
+      trashDelete.forEach((e) => {
+        e.addEventListener("click", (event) => deleteWorks(event, e.id));
+      });
     };
   } catch (error) {
     console.error(error.message);
@@ -120,13 +120,21 @@ function closeModal() {
   document.getElementById("close").addEventListener("click", function () { // AU CLICK DE 'CROIX' ON RETIRE L'OVERLAY GRIS + MODALE
     document.querySelector(".overlay").style.display = "none";
     document.querySelector(".modal").style.display = "none";
+    document.getElementById("output").style.display = "none";
 
+    document.getElementById("picture-svg").style.display = "block";
+    document.querySelector(".upload-btn").style.display = "block";
+    document.querySelector(".file-info").style.display = "block";
     document.body.classList.remove("no-scroll"); // ON RETIRE LE HIDDEN SCROLL BAR DU BODY
   });
   document.querySelector(".overlay").addEventListener("click", function () { // AU CLICK DE 'OVERLAY' ON RETIRE L'OVERLAY GRIS + MODALE
     document.querySelector(".overlay").style.display = "none";
     document.querySelector(".modal").style.display = "none";
+    document.getElementById("output").style.display = "none";
 
+    document.getElementById("picture-svg").style.display = "block";
+    document.querySelector(".upload-btn").style.display = "block";
+    document.querySelector(".file-info").style.display = "block";
     document.body.classList.remove("no-scroll"); // ON RETIRE LE HIDDEN SCROLL BAR DU BODY
   });
 };
@@ -165,6 +173,11 @@ function switchModal() {
     document.querySelector(".gallery-container").style.display = "block";
     document.getElementById("arrow-left").style.display = "none";
     document.getElementById("open-add-works").style.backgroundColor = "#1D6154";
+    document.getElementById("output").style.display = "none"
+
+    document.getElementById("picture-svg").style.display = "block";
+    document.querySelector(".upload-btn").style.display = "block";
+    document.querySelector(".file-info").style.display = "block";
   });
 };
 switchModal(); // APPELLE DE LA FONCTION
@@ -186,7 +199,28 @@ async function deleteWorks(event, trashId) {
     throw new Error(`Response status : ${response.status}`);
   }
   else {
-      document.getElementById("figure-" + trashId).remove(); // ON REMOVE LES FIGURES SANS AVOIR BESOINS DE REFRESH LA PAGE
-      document.getElementById("modal-figure-" + trashId).remove(); // ON REMOVE LES FIGURES SANS AVOIR BESOINS DE REFRESH LA PAGE
+    document.getElementById("figure-" + trashId).remove(); // ON REMOVE LES FIGURES SANS AVOIR BESOINS DE REFRESH LA PAGE
+    document.getElementById("modal-figure-" + trashId).remove(); // ON REMOVE LES FIGURES SANS AVOIR BESOINS DE REFRESH LA PAGE
   };
 };
+
+// FUNCTION AJOUT DE L'IMG EN PREVIEW
+document.getElementById("photo-upload").addEventListener("change", loadFile = function (event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = function () {
+    var output = document.getElementById("output");
+    document.getElementById('output').style.display = "block";
+    output.src = reader.result;
+    if (document.getElementById("output").style.display = "block") {
+      document.getElementById("picture-svg").style.display = "none";
+      document.querySelector(".upload-btn").style.display = "none";
+      document.querySelector(".file-info").style.display = "none";
+    }
+  };
+  if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+    reader.readAsDataURL(file);
+  } else {
+    alert("Veuilliez sélectionner une images au format JPG ou PNG.")
+  }
+});
