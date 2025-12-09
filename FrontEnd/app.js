@@ -1,6 +1,7 @@
 //METHOD FETCH POUR APPELLER L'API TRAVAUX
 async function getWorks(filter) {
   document.querySelector(".gallery").innerHTML = "";
+  document.querySelector(".gallery-modal").innerHTML = "";
   const url = "http://localhost:5678/api/works"; // CREATION DE VARIABLE POUR URL DE l'API
   try {
     const response = await fetch(url);
@@ -18,11 +19,11 @@ async function getWorks(filter) {
       for (let i = 0; i < json.length; i++) {
         setFigure(json[i]);
         setFigureModal(json[i]);
-        const trashDelete = document.querySelectorAll(".trash-container");
-        trashDelete.forEach((e) => {
-          e.addEventListener("click", (event) => deleteWorks(event, json[i]));
-        });
       };
+      const trashDelete = document.querySelectorAll(".trash-container");
+        trashDelete.forEach((e) => {
+          e.addEventListener("click", (event) => deleteWorks(event, e.id));
+        });
     };
   } catch (error) {
     console.error(error.message);
@@ -168,7 +169,7 @@ function switchModal() {
 };
 switchModal(); // APPELLE DE LA FONCTION
 
-async function deleteWorks(event, data) {
+async function deleteWorks(event, trashId) {
   const id = event.currentTarget.id;
   const token = sessionStorage.authToken;
   const url = "http://localhost:5678/api/works/";
@@ -181,14 +182,11 @@ async function deleteWorks(event, data) {
     },
   });
 
-  // Corrected condition: Check for expected error statuses or successful no-content status
   if (response.status === 401 || response.status === 500) {
     throw new Error(`Response status : ${response.status}`);
   }
   else {
-    //document.getElementById("figure-" + data.id).remove();
-    //document.getElementById("modal-figure-" + data.id).remove();
-    console.log("Delete successful, no content returned.");
-    console.log(data);
+      document.getElementById("figure-" + trashId).remove();
+      document.getElementById("modal-figure-" + trashId).remove(); 
   }
 }
