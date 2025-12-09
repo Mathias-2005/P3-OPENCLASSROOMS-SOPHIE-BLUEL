@@ -109,6 +109,7 @@ function openModal() {
     document.querySelector(".gallery-container").style.display = "block";
     document.getElementById("arrow-left").style.display = "none";
     document.getElementById("open-add-works").style.backgroundColor = "#1D6154";
+    document.getElementById("open-add-works").disabled = false;
 
     document.body.classList.add("no-scroll"); // ON AJOUTE LE HIDDEN SCROLL BAR DU BODY QUAND MODAL OPEN
   });
@@ -159,6 +160,8 @@ function ModalAddWorks() {
     document.querySelector(".add-works").style.display = "block";
     document.getElementById("arrow-left").style.display = "block";
     document.getElementById("open-add-works").style.backgroundColor = "#A7A7A7";
+    document.getElementById("open-add-works").disabled = true;
+
   });
 };
 
@@ -218,9 +221,44 @@ document.getElementById("photo-upload").addEventListener("change", loadFile = fu
       document.querySelector(".file-info").style.display = "none";
     }
   };
-  if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+  // VERIFICATION DU TYPE ET DE LA TAILLE DE L'IMAGE
+  if (file && (file.type === "image/jpeg" || file.type === "image/png" && file.size <= 4 * 1024 * 1024)) {
     reader.readAsDataURL(file);
   } else {
-    alert("Veuilliez sélectionner une images au format JPG ou PNG.")
+    alert("Veuilliez sélectionner une images au format JPG ou PNG. Ne dépassant pas 4MO.")
   }
 });
+
+// FUNCTION AVOIR LES CATEGORIES DANS LA MODAL 
+async function loadCategories() {
+  const categorySelect = document.getElementById("categorie");
+  if (!categorySelect) {
+    console.error("L'élément categoryInput n'a pas été trouvé.");
+    return;
+  }
+  categorySelect.innerHTML = ""; // VIDE LES OPTIONS EXISTANTE
+
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const categories = await response.json();
+
+    // Ajoute une option par défaut
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Choisissez une catégorie";
+    categorySelect.appendChild(defaultOption);
+
+    // Ajoute les catégories au sélecteur
+    categories.forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category.id;
+      option.textContent = category.name;
+      categorySelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Erreur lors du chargement des catégories:", error);
+  }
+}
+loadCategories();
+
+
