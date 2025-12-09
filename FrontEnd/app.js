@@ -29,10 +29,10 @@ async function getWorks(filter) {
     console.error(error.message);
   };
 };
-//APPELLE DE LA FONCTION
+// APPELLE DE LA FONCTION
 getWorks();
 
-//FUNCTION AJOUT DES TRAVAUX DEPUIS JS DYNAMIQUEMENT
+// FONCTION AJOUT DES TRAVAUX DEPUIS JS DYNAMIQUEMENT
 function setFigure(data) {
   const figure = document.createElement("figure"); // CREATION DE VARIABLE 'FIGURE'
   figure.setAttribute("id", "figure-" + data.id);
@@ -64,7 +64,7 @@ async function getCategories() {
 // APPELLE DE LA FONCTION
 getCategories();
 
-//FUNCTION AJOUT DES CATEGORIES FILTRES DEPUIS JS DYNAMIQUEMENT
+// FONCTION AJOUT DES CATEGORIES FILTRES DEPUIS JS DYNAMIQUEMENT
 function setFilter(data) {
   const div = document.createElement("div");
   div.className = data.id;
@@ -74,7 +74,7 @@ function setFilter(data) {
 };
 document.querySelector(".tous").addEventListener("click", () => getWorks()); // AU CLICK DE 'TOUS' APPEL DE GETWORKS()
 
-// FUNCTION EDITIONMODE SI LOGIN AUTORISER
+// FONCTION EDITIONMODE SI LOGIN AUTORISER
 function editMode() {
   if (sessionStorage.authToken) {
 
@@ -98,7 +98,7 @@ function editMode() {
 };
 editMode(); // APPELLE DE LA FONCTION
 
-// FUNCTION OUVRIR LA MODAL 
+// FONCTION OUVRIR LA MODAL 
 function openModal() {
   document.querySelector(".open-modal").addEventListener("click", function () { // AU CLICK DE 'MODIFIER' ON AFFICHE L'OVERLAY GRIS + MODALE
     document.querySelector(".overlay").style.display = "block";
@@ -116,7 +116,7 @@ function openModal() {
   ModalAddWorks(); // APELLE DE LA FONCTION
 };
 
-// FUNCTION FERMER LA MODAL 
+// FONCTION FERMER LA MODAL 
 function closeModal() {
   document.getElementById("close").addEventListener("click", function () { // AU CLICK DE 'CROIX' ON RETIRE L'OVERLAY GRIS + MODALE
     document.querySelector(".overlay").style.display = "none";
@@ -141,7 +141,7 @@ function closeModal() {
 };
 closeModal(); // APPELLE DE LA FONCTION
 
-//FUNCTION AJOUT DES TRAVAUX DEPUIS JS DYNAMIQUEMENT
+// FONCTION AJOUT DES TRAVAUX DEPUIS JS DYNAMIQUEMENT
 function setFigureModal(data) {
   figure = document.createElement("figure");
   figure.setAttribute("id", "modal-figure-" + data.id);
@@ -151,7 +151,7 @@ function setFigureModal(data) {
   document.querySelector(".gallery-modal").append(figure); // APPEND FIGURE DANS '.GALLERY-MODAL' 
 };
 
-// FUNCTION OUVRIR LA MODAL ADD WORKS
+// FONCTION OUVRIR LA MODAL ADD WORKS
 function ModalAddWorks() {
   document.getElementById("open-add-works").addEventListener("click", function () { // AU CLICK DU 'BTN' AJOUT DE LA MODALADDWORKS
     document.querySelector(".gallery-container").style.display = "none";
@@ -165,7 +165,7 @@ function ModalAddWorks() {
   });
 };
 
-// FUNCTION SWITCH LES DEUX MODAL
+// FONCTION SWITCH LES DEUX MODAL
 function switchModal() {
   document.getElementById("arrow-left").addEventListener("click", function () { // AU CLICK DE 'ARROW-LEFT' MODAL REAPPARAIT/MODALADDWORKS DISPARAIT
     document.querySelector(".modal").style.display = "block";
@@ -207,7 +207,7 @@ async function deleteWorks(event, trashId) {
   };
 };
 
-// FUNCTION AJOUT DE L'IMG EN PREVIEW
+// FONCTION AJOUT DE L'IMG EN PREVIEW AU CHANGEMENT 
 document.getElementById("photo-upload").addEventListener("change", loadFile = function (event) {
   const file = event.target.files[0];
   const reader = new FileReader();
@@ -215,7 +215,7 @@ document.getElementById("photo-upload").addEventListener("change", loadFile = fu
     var output = document.getElementById("output");
     document.getElementById('output').style.display = "block";
     output.src = reader.result;
-    if (document.getElementById("output").style.display = "block") {
+    if (document.getElementById("output").style.display = "block") { // SI L'IMAGE APPARAIT ON RETIRE LES CHOSES DERRIERES...
       document.getElementById("picture-svg").style.display = "none";
       document.querySelector(".upload-btn").style.display = "none";
       document.querySelector(".file-info").style.display = "none";
@@ -225,11 +225,11 @@ document.getElementById("photo-upload").addEventListener("change", loadFile = fu
   if (file && (file.type === "image/jpeg" || file.type === "image/png" && file.size <= 4 * 1024 * 1024)) {
     reader.readAsDataURL(file);
   } else {
-    alert("Veuilliez sélectionner une images au format JPG ou PNG. Ne dépassant pas 4MO.")
+    alert("Veuilliez sélectionner une images au format JPG ou PNG. Ne dépassant pas 4MO.") // MESSAGE D'ERREUR SI ...
   }
 });
 
-// FUNCTION AVOIR LES CATEGORIES DANS LA MODAL 
+// FONCTION AVOIR LES CATEGORIES DANS LA MODAL 
 async function loadCategories() {
   const categorySelect = document.getElementById("categorie");
   if (!categorySelect) {
@@ -239,16 +239,16 @@ async function loadCategories() {
   categorySelect.innerHTML = ""; // VIDE LES OPTIONS EXISTANTE
 
   try {
-    const response = await fetch("http://localhost:5678/api/categories");
+    const response = await fetch("http://localhost:5678/api/categories"); // ON RECUPERE L'URL API CATEGORIES
     const categories = await response.json();
 
-    // Ajoute une option par défaut
+    // AJOUTE UN CHOIX PAR DEFAUT
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = "Choisissez une catégorie";
     categorySelect.appendChild(defaultOption);
 
-    // Ajoute les catégories au sélecteur
+    // AJOUTE LES CATEGORIES
     categories.forEach((category) => {
       const option = document.createElement("option");
       option.value = category.id;
@@ -259,6 +259,6 @@ async function loadCategories() {
     console.error("Erreur lors du chargement des catégories:", error);
   }
 }
-loadCategories();
+loadCategories(); // APELLE DE LA FONCTION
 
 
