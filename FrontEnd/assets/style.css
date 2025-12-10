@@ -409,7 +409,7 @@ p a {
 	appearance: none;
 }
 
-#titre {
+#title {
 	width: 408px;
 	padding-left: 10px;
 }
@@ -479,6 +479,11 @@ p a {
 	font-size: 14px;
 	height: 36px;
 	background-color: #1D6154;
+}
+
+#btn-add-works {
+	font-size: 14px;
+	height: 36px;
 }
 
 /**************** CSS BARRE DE FILTRES ******************/

@@ -105,11 +105,10 @@ function openModal() {
     document.querySelector(".modal").style.display = "block";
     document.querySelector(".add-works").style.display = "none";
     document.getElementById("title-modal").innerHTML = "Galerie photo";
-    document.getElementById("open-add-works").value = "Ajouter une photo";
     document.querySelector(".gallery-container").style.display = "block";
     document.getElementById("arrow-left").style.display = "none";
-    document.getElementById("open-add-works").style.backgroundColor = "#1D6154";
     document.getElementById("open-add-works").disabled = false;
+    document.getElementById("btn-add-works").style.display = "none";
 
     document.body.classList.add("no-scroll"); // ON AJOUTE LE HIDDEN SCROLL BAR DU BODY QUAND MODAL OPEN
   });
@@ -156,11 +155,11 @@ function ModalAddWorks() {
   document.getElementById("open-add-works").addEventListener("click", function () { // AU CLICK DU 'BTN' AJOUT DE LA MODALADDWORKS
     document.querySelector(".gallery-container").style.display = "none";
     document.getElementById("title-modal").innerHTML = "Ajout photo";
-    document.getElementById("open-add-works").value = "Valider";
     document.querySelector(".add-works").style.display = "block";
     document.getElementById("arrow-left").style.display = "block";
-    document.getElementById("open-add-works").style.backgroundColor = "#A7A7A7";
-    document.getElementById("open-add-works").disabled = true;
+    document.getElementById("open-add-works").style.display = "none";
+    document.getElementById("btn-add-works").style.display = "block";
+    document.getElementById("btn-add-works").style.backgroundColor = "#A7A7A7";
 
   });
 };
@@ -171,12 +170,13 @@ function switchModal() {
     document.querySelector(".modal").style.display = "block";
 
     document.getElementById("title-modal").innerHTML = "Galerie photo";
-    document.getElementById("open-add-works").value = "Ajouter une photo";
     document.querySelector(".add-works").style.display = "none";
     document.querySelector(".gallery-container").style.display = "block";
     document.getElementById("arrow-left").style.display = "none";
-    document.getElementById("open-add-works").style.backgroundColor = "#1D6154";
     document.getElementById("output").style.display = "none"
+    document.getElementById("open-add-works").style.display = "block";
+    document.getElementById("open-add-works").disabled = false;
+    document.getElementById("btn-add-works").style.display = "none";
 
     document.getElementById("picture-svg").style.display = "block";
     document.querySelector(".upload-btn").style.display = "block";
@@ -262,3 +262,62 @@ async function loadCategories() {
 loadCategories(); // APELLE DE LA FONCTION
 
 
+const btnAddWorks = document.getElementById("btn-add-works");
+btnAddWorks.addEventListener("click", addWorks);
+
+async function addWorks(event) {
+
+  event.preventDefault();
+
+  const file = document.getElementById("photo-upload").files[0];
+  const categoryModal = document.getElementById("categorie").value;
+  const title = document.getElementById("title").value;
+  const img = document.getElementById("output").src;
+  const token = sessionStorage.authToken;
+
+  if (title === "" || categoryModal === "" || img === "") {
+    alert("Merci de remplir le formulaire complémentement.");
+    return;
+  }
+  try {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("category", categoryModal)
+    formData.append("image", file);
+
+
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + token,
+      },
+      body: formData,
+    });
+
+    if (response.status === 201) {
+      alert("Projet ajouté !");
+    } else if (response.status === 400) {
+      alert("Merci de remplir tout les champs.");
+    } else if (response.status === 500) {
+      alert("Erreur serveur.");
+    } else if (response.status === 401) {
+      alert("Vous n'êtes pas autorisé à ajouter un projet.");
+    }
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+
+
+
+/* function checkForm() {
+  if (img.length > 0 &&
+    title.trim() !== "") {
+    document.getElementById("btn-add-works").style.backgroundColor = "#1D6154";
+  }
+}
+
+title.addEventListener("input", checkForm);
+img.addEventListener("change", checkForm); */
