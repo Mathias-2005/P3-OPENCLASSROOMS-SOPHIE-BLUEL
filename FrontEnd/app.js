@@ -108,7 +108,9 @@ function openModal() {
     document.querySelector(".gallery-container").style.display = "block";
     document.getElementById("arrow-left").style.display = "none";
     document.getElementById("open-add-works").disabled = false;
+    document.getElementById("open-add-works").style.display = "block";
     document.getElementById("btn-add-works").style.display = "none";
+    document.getElementById("error").style.display = "none";
 
     document.body.classList.add("no-scroll"); // ON AJOUTE LE HIDDEN SCROLL BAR DU BODY QUAND MODAL OPEN
   });
@@ -177,6 +179,9 @@ function switchModal() {
     document.getElementById("open-add-works").style.display = "block";
     document.getElementById("open-add-works").disabled = false;
     document.getElementById("btn-add-works").style.display = "none";
+    document.getElementById("error").style.display = "none";
+    document.getElementById("title").value = "";
+    document.getElementById("categorie").value = ""
 
     document.getElementById("picture-svg").style.display = "block";
     document.querySelector(".upload-btn").style.display = "block";
@@ -276,7 +281,10 @@ async function addWorks(event) {
   const token = sessionStorage.authToken;
 
   if (title === "" || categoryModal === "" || img === "") {
-    alert("Merci de remplir le formulaire complémentement.");
+    const errorBox = document.getElementById("error"); // ON VIENS PRENDRE LA DIV ERROR DU HTML 
+    errorBox.style.display = "block"; // ON REMOVE LE DISPLAY NONE DU HTML
+    errorBox.innerText = "Merci de remplir le formulaire complémentement."; // ON LUI IMPLEMENTE LE TEXT 
+    //alert("Merci de remplir le formulaire complémentement.");
     return;
   }
   try {
@@ -295,7 +303,10 @@ async function addWorks(event) {
     });
 
     if (response.status === 201) {
-      alert("Projet ajouté !");
+      document.querySelector(".overlay").style.display = "none";
+      document.querySelector(".modal").style.display = "none";
+      document.body.classList.remove("no-scroll"); // ON RETIRE LE HIDDEN SCROLL BAR DU BODY
+      getWorks();
     } else if (response.status === 400) {
       alert("Merci de remplir tout les champs.");
     } else if (response.status === 500) {
