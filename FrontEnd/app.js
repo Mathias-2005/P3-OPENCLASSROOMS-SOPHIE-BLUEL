@@ -4,7 +4,7 @@ async function getWorks(filter) {
   document.querySelector(".gallery-modal").innerHTML = "";
   const url = "http://localhost:5678/api/works"; // CREATION DE VARIABLE POUR URL DE l'API
   try {
-    const response = await fetch(url);
+    const response = await fetch(url); // FETCH + URL
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     };
@@ -12,12 +12,12 @@ async function getWorks(filter) {
     if (filter) {
       const filtered = json.filter((data) => data.categoryId === filter);
       for (let i = 0; i < filtered.length; i++) {
-        setFigure(filtered[i]);
+        setFigure(filtered[i]); // APELLE DE FONCTION
       };
     }
     else {
       for (let i = 0; i < json.length; i++) { // BOUCLE POUR APPRAITRE LES WORKS 
-        setFigure(json[i]);
+        setFigure(json[i]); // APELLE DES FONCTIONS
         setFigureModal(json[i]);
       };
       const trashDelete = document.querySelectorAll(".trash-container"); // AU CLICK DE TRASHDELETE ON APPELE LA FUNCTION DELETE 
@@ -35,7 +35,7 @@ getWorks();
 // FONCTION AJOUT DES TRAVAUX DEPUIS JS DYNAMIQUEMENT
 function setFigure(data) {
   const figure = document.createElement("figure"); // CREATION DE VARIABLE 'FIGURE'
-  figure.setAttribute("id", "figure-" + data.id);
+  figure.setAttribute("id", "figure-" + data.id); // ON AJOUTE UN ID 'FIGURE-+.ID'
   figure.innerHTML = `<img src= ${data.imageUrl} alt= ${data.title}> 
                         <figcaption>${data.title}</figcaption>`; // AJOUT DES IMG + TITLE 
   document.querySelector(".gallery").append(figure); // APPEND FIGURE DANS '.GALLERY' 
@@ -65,13 +65,13 @@ getCategories();
 
 // FONCTION AJOUT DES CATEGORIES FILTRES DEPUIS JS DYNAMIQUEMENT
 function setFilter(data) {
-  const div = document.createElement("div");
-  div.className = data.id;
-  div.addEventListener("click", () => getWorks(data.id));
-  div.innerHTML = `${data.name}`;
+  const div = document.createElement("div"); // ON CREER UNE BALISE 'DIV'
+  div.className = data.id; // CLASS NAME = .ID
+  div.addEventListener("click", () => getWorks(data.id)); // AU CLICK FONCTION GETWORKS
+  div.innerHTML = `${data.name}`; // AJOUT DES NOM DE FILTRES
   document.querySelector(".filtres-container").append(div);
 };
-document.querySelector(".tous").addEventListener("click", () => getWorks()); // AU CLICK DE 'TOUS' APPEL DE GETWORKS()
+document.querySelector(".tous").addEventListener("click", () => getWorks()); // AU CLICK DE 'TOUS' APPEL DE GETWORKS
 
 // FONCTION EDITIONMODE SI LOGIN AUTORISER
 function editMode() {
@@ -89,7 +89,7 @@ function editMode() {
 
     document.querySelector(".filtres-container").style.display = "none" // ON FAIT DISPARAITRE LES FILTRES
     const editProjet = document.createElement("p"); // CREATION DE LA BALISE P 
-    editProjet.className = "open-modal";
+    editProjet.className = "open-modal"; // AJOUT DE CLASSNAME 
     editProjet.innerHTML = '<p id="edit-projet"><i class="fa-regular fa-pen-to-square"></i><p><a href="#">modifier</a></p></p>'; // AJOUT DES ELEMENTS
     document.querySelector(".edit-projets").append(editProjet); // AJOUT DE P DANS APRES .EDIT-PROJETS
     openModal(); // APPELLE DE LA FONCTION SI EDIT MODE ACTIF
@@ -145,13 +145,13 @@ function closeModal() {
 };
 closeModal(); // APPELLE DE LA FONCTION
 
-// FONCTION AJOUT DES TRAVAUX DEPUIS JS DYNAMIQUEMENT
+// FONCTION AJOUT DES TRAVAUX DANS MODAL GALLERY
 function setFigureModal(data) {
-  figure = document.createElement("figure");
-  figure.setAttribute("id", "modal-figure-" + data.id);
+  figure = document.createElement("figure"); // ON CREER UNE BALISE 'FIGURE'
+  figure.setAttribute("id", "modal-figure-" + data.id); // ON LUI DONNE UN ID 'MODAL-FIGURE-+ID'
   figure.innerHTML = `<img src= ${data.imageUrl} alt= ${data.title}> 
-  <div class = "trash-container" id="${data.id}"><i id="trash" class="fa-solid fa-trash-can"></i></div>`; // AJOUT DES IMG 
-  figure.className = "modal-figure"; // AJOUT D'UNE CLASSNAME '.'
+  <div class = "trash-container" id="${data.id}"><i id="trash" class="fa-solid fa-trash-can"></i></div>`; // AJOUT DES IMG + TITRE + POUBELLE
+  figure.className = "modal-figure"; // AJOUT D'UNE CLASSNAME 
   document.querySelector(".gallery-modal").append(figure); // APPEND FIGURE DANS '.GALLERY-MODAL' 
 };
 
@@ -239,7 +239,7 @@ document.getElementById("photo-upload").addEventListener("change", loadFile = fu
 
 // FONCTION AVOIR LES CATEGORIES DANS LA MODAL 
 async function loadCategories() {
-  const categorySelect = document.getElementById("categorie");
+  const categorySelect = document.getElementById("categorie"); // ON REPREND L'INPUT CATEGORIE
   if (!categorySelect) {
     console.error("L'élément categoryInput n'a pas été trouvé.");
     return;
@@ -251,32 +251,32 @@ async function loadCategories() {
     const categories = await response.json();
 
     // AJOUTE UN CHOIX PAR DEFAUT
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Choisissez une catégorie";
-    categorySelect.appendChild(defaultOption);
+    const defaultOption = document.createElement("option"); // ON CREER BALISE 'OPTION'
+    defaultOption.value = ""; // ON LUI DONNE UNE VALEUR DE RIEN
+    defaultOption.textContent = "Choisissez une catégorie"; // MESSAGE PAR DEFAUT
+    categorySelect.appendChild(defaultOption); // ON APPEND LE MESSAGE DANS 'CATEGORYSELECT'
 
     // AJOUTE LES CATEGORIES
     categories.forEach((category) => {
-      const option = document.createElement("option");
-      option.value = category.id;
-      option.textContent = category.name;
-      categorySelect.appendChild(option);
+      const option = document.createElement("option"); // ON CREER LES BALISES 'OPTION'
+      option.value = category.id; // DE VALEUR .ID
+      option.textContent = category.name; // DE TEXT .NAME
+      categorySelect.appendChild(option); // ON APPEND 'OPTION' DANS 'CATEGORYSELECT'
     });
   } catch (error) {
-    console.error("Erreur lors du chargement des catégories:", error);
+    console.error("Erreur lors du chargement des catégories:", error); // MESSAGE D'ERREUR...
   }
 }
 loadCategories(); // APELLE DE LA FONCTION
 
 
-const btnAddWorks = document.getElementById("btn-add-works");
-btnAddWorks.addEventListener("click", addWorks);
+const btnAddWorks = document.getElementById("btn-add-works"); // ON RECUPERE SON ID HTML
+btnAddWorks.addEventListener("click", addWorks); // AU CLICK DU BTN VALIDER APELLE FONCTION ADDWORKS
 
 async function addWorks(event) {
 
   event.preventDefault();
-
+  // DONNER UNE VARIABLE DE TOUT LES INPUT NECESSAIRE A LA VALIDATION DE POST
   const file = document.getElementById("photo-upload").files[0];
   const categoryModal = document.getElementById("categorie").value;
   const title = document.getElementById("title").value;
@@ -287,17 +287,16 @@ async function addWorks(event) {
     const errorBox = document.getElementById("error"); // ON VIENS PRENDRE LA DIV ERROR DU HTML 
     errorBox.style.display = "block"; // ON REMOVE LE DISPLAY NONE DU HTML
     errorBox.innerText = "Merci de remplir le formulaire complémentement."; // ON LUI IMPLEMENTE LE TEXT 
-    //alert("Merci de remplir le formulaire complémentement.");
     return;
   }
   try {
-    const formData = new FormData();
+    const formData = new FormData(); // CREATION DE 'FORMDATA' + APPEND LES VALEURS DU FORM
     formData.append("title", title);
     formData.append("category", categoryModal)
     formData.append("image", file);
 
 
-    const response = await fetch("http://localhost:5678/api/works", {
+    const response = await fetch("http://localhost:5678/api/works", { // FETCH + URL API + METHOD POST 
       method: "POST",
       headers: {
         "Authorization": "Bearer " + token,
@@ -305,22 +304,25 @@ async function addWorks(event) {
       body: formData,
     });
 
-    if (response.status === 201) {
+    if (response.status === 201) { // SI VALEUR DE 201 (DONC PROJET AJOUTER) ...
       document.querySelector(".overlay").style.display = "none";
       document.querySelector(".modal").style.display = "none";
       document.getElementById("title").value = "";
       document.getElementById("categorie").value = ""
       document.getElementById("output").style.display = "none"
-      document.body.classList.remove("no-scroll"); // ON RETIRE LE HIDDEN SCROLL BAR DU BODY
+      document.body.classList.remove("no-scroll");
       document.getElementById("picture-svg").style.display = "block";
       document.querySelector(".upload-btn").style.display = "block";
       document.querySelector(".file-info").style.display = "block";
-      getWorks();
-    } else if (response.status === 400) {
+      getWorks(); // APELLE DE GETWORKS POUR AJOUTER DYNAMIQUEMENT SANS REFRESH LA PAGE
+    } 
+    else if (response.status === 400) { // SI REPONSE DE 400...
       alert("Merci de remplir tout les champs.");
-    } else if (response.status === 500) {
+    } 
+    else if (response.status === 500) { // SI REPONSE DE 500...
       alert("Erreur serveur.");
-    } else if (response.status === 401) {
+    }
+     else if (response.status === 401) { // SI REPONSE DE 401...
       alert("Vous n'êtes pas autorisé à ajouter un projet.");
     }
   }
