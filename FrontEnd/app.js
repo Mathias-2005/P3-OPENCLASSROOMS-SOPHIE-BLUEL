@@ -51,7 +51,6 @@ async function getCategories() {
     };
 
     const json = await response.json();
-    console.log(json);
 
     for (let i = 0; i < json.length; i++) {
       setFilter(json[i]);
@@ -128,6 +127,8 @@ function closeModal() {
     document.querySelector(".upload-btn").style.display = "block";
     document.querySelector(".file-info").style.display = "block";
     document.body.classList.remove("no-scroll"); // ON RETIRE LE HIDDEN SCROLL BAR DU BODY
+    document.getElementById("title").value = "";
+    document.getElementById("categorie").value = ""
   });
   document.querySelector(".overlay").addEventListener("click", function () { // AU CLICK DE 'OVERLAY' ON RETIRE L'OVERLAY GRIS + MODALE
     document.querySelector(".overlay").style.display = "none";
@@ -138,6 +139,8 @@ function closeModal() {
     document.querySelector(".upload-btn").style.display = "block";
     document.querySelector(".file-info").style.display = "block";
     document.body.classList.remove("no-scroll"); // ON RETIRE LE HIDDEN SCROLL BAR DU BODY
+    document.getElementById("title").value = "";
+    document.getElementById("categorie").value = ""
   });
 };
 closeModal(); // APPELLE DE LA FONCTION
@@ -305,7 +308,13 @@ async function addWorks(event) {
     if (response.status === 201) {
       document.querySelector(".overlay").style.display = "none";
       document.querySelector(".modal").style.display = "none";
+      document.getElementById("title").value = "";
+      document.getElementById("categorie").value = ""
+      document.getElementById("output").style.display = "none"
       document.body.classList.remove("no-scroll"); // ON RETIRE LE HIDDEN SCROLL BAR DU BODY
+      document.getElementById("picture-svg").style.display = "block";
+      document.querySelector(".upload-btn").style.display = "block";
+      document.querySelector(".file-info").style.display = "block";
       getWorks();
     } else if (response.status === 400) {
       alert("Merci de remplir tout les champs.");
@@ -321,14 +330,15 @@ async function addWorks(event) {
 }
 
 
-
-
 /* function checkForm() {
-  if (img.length > 0 &&
-    title.trim() !== "") {
+
+  categoryModal = document.getElementById("categorie").value;
+
+  if (categoryModal.trim !== "" &&
+    title.trim !== "") {
     document.getElementById("btn-add-works").style.backgroundColor = "#1D6154";
   }
 }
 
 title.addEventListener("input", checkForm);
-img.addEventListener("change", checkForm); */
+categoryModal.addEventListener("input", checkForm); */
