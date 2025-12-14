@@ -216,7 +216,7 @@ async function deleteWorks(event, trashId) {
 };
 
 // FONCTION AJOUT DE L'IMG EN PREVIEW AU CHANGEMENT 
-document.getElementById("photo-upload").addEventListener("change", loadFile = function (event) {
+document.getElementById("photo-upload").addEventListener("input", loadFile = function (event) {
   const file = event.target.files[0];
   const reader = new FileReader();
   reader.onload = function () {
@@ -331,16 +331,25 @@ async function addWorks(event) {
   }
 }
 
+  const categoryModal = document.getElementById("categorie");
+  const title = document.getElementById("title");
+  const img = document.getElementById("photo-upload");
 
-/* function checkForm() {
+function checkForm() {
 
-  categoryModal = document.getElementById("categorie").value;
+  const titleOk = title.value.trim() !== "";
+  const categoryModalOk = categoryModal.value !== "";
+  const imgOk = img.value !== "";
 
-  if (categoryModal.trim !== "" &&
-    title.trim !== "") {
+
+  if (titleOk && categoryModalOk && imgOk) {
     document.getElementById("btn-add-works").style.backgroundColor = "#1D6154";
-  }
+  } 
+
 }
 
-title.addEventListener("input", checkForm);
-categoryModal.addEventListener("input", checkForm); */
+[title, categoryModal, img].forEach(e => {
+  e.addEventListener("change", checkForm);
+  e.addEventListener("input", checkForm);
+})
+
