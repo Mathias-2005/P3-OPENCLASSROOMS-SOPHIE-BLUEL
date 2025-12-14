@@ -540,11 +540,6 @@ figure img {
 	background-color: #FFFEF8;
 }
 
-.tous:hover {
-	color: white;
-	background-color: #1D6154;
-}
-
 .gallery {
 	width: 100%;
 	display: grid;

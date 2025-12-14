@@ -178,13 +178,13 @@ function switchModal() {
     document.querySelector(".add-works").style.display = "none";
     document.querySelector(".gallery-container").style.display = "block";
     document.getElementById("arrow-left").style.display = "none";
-    document.getElementById("output").style.display = "none"
+    document.getElementById("output").style.display = "none";
     document.getElementById("open-add-works").style.display = "block";
     document.getElementById("open-add-works").disabled = false;
     document.getElementById("btn-add-works").style.display = "none";
     document.getElementById("error").style.display = "none";
     document.getElementById("title").value = "";
-    document.getElementById("categorie").value = ""
+    document.getElementById("categorie").value = "";
 
     document.getElementById("picture-svg").style.display = "block";
     document.querySelector(".upload-btn").style.display = "block";
@@ -270,6 +270,32 @@ async function loadCategories() {
 loadCategories(); // APELLE DE LA FONCTION
 
 
+const categoryModal = document.getElementById("categorie");
+const title = document.getElementById("title");
+const img = document.getElementById("photo-upload");
+
+
+// FONCTION CHEKFORM POUR BTN VALIDER COLOR
+function checkForm() {
+  const titleOk = title.value.trim() !== "";
+  const categoryModalOk = categoryModal.value !== "";
+  const imgOk = img.value !== "";
+
+
+  if (titleOk && categoryModalOk && imgOk) { // SI 'OK' ALORS CHANGEMENT DE BACKGROUNDCOLOR 
+    document.getElementById("btn-add-works").style.backgroundColor = "#1D6154";
+  } 
+  else { // SINON LA COLEUR NE CHANGE PAS
+    document.getElementById("btn-add-works").style.backgroundColor = "#A7A7A7";
+  }
+}
+
+[title, categoryModal, img].forEach(e => { // APPELE DE LA FONCTION VIA BOUCLE ET EVENTECOUTE
+  e.addEventListener("change", checkForm);
+  e.addEventListener("input", checkForm);
+})
+
+
 const btnAddWorks = document.getElementById("btn-add-works"); // ON RECUPERE SON ID HTML
 btnAddWorks.addEventListener("click", addWorks); // AU CLICK DU BTN VALIDER APELLE FONCTION ADDWORKS
 
@@ -331,25 +357,5 @@ async function addWorks(event) {
   }
 }
 
-  const categoryModal = document.getElementById("categorie");
-  const title = document.getElementById("title");
-  const img = document.getElementById("photo-upload");
 
-function checkForm() {
-
-  const titleOk = title.value.trim() !== "";
-  const categoryModalOk = categoryModal.value !== "";
-  const imgOk = img.value !== "";
-
-
-  if (titleOk && categoryModalOk && imgOk) {
-    document.getElementById("btn-add-works").style.backgroundColor = "#1D6154";
-  } 
-
-}
-
-[title, categoryModal, img].forEach(e => {
-  e.addEventListener("change", checkForm);
-  e.addEventListener("input", checkForm);
-})
 
