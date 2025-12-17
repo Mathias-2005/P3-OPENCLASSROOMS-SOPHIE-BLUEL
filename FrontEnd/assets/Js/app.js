@@ -66,7 +66,7 @@ getCategories();
 // FONCTION AJOUT DES CATEGORIES FILTRES DEPUIS JS DYNAMIQUEMENT
 function setFilter(data) {
   const div = document.createElement("div"); // ON CREER UNE BALISE 'DIV'
-  div.className = data.id; // CLASS NAME = .ID
+  div.className = data.id + "-active"; // CLASS NAME = .ID
   div.addEventListener("click", () => getWorks(data.id)); // AU CLICK FONCTION GETWORKS
   div.innerHTML = `${data.name}`; // AJOUT DES NOM DE FILTRES
   document.querySelector(".filtres-container").append(div);
