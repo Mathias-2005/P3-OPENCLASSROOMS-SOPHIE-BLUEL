@@ -39,6 +39,18 @@ email: sophie.bluel@test.tld
 
 password: S0phie
 
+## Evaluation 
+
+***Evaluation*** : Samedi 20 décembre 2025 -> **Projet Validé**
+
+### Soutenance 
+
+***Remarques*** : 
+L’étudiant a présenté un exposé satisfaisant, mettant en évidence une bonne maîtrise des compétences évaluées. 
+Il a décrit avec précision les différentes étapes de conception de son projet. 
+Lors de la session de questions, ses réponses étaient pertinentes. 
+Le résultat final répond aux attentes du projet, la validation est donc accordée.
+
 ## Ressources utilisées
 
 Visual Studio Code - Editeur de codes
